@@ -32,6 +32,21 @@ function App() {
         fetchAPI();
       });
   }
+  function rmInfraction(i) {
+    fetch("http://localhost:9000/infractions/rm", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ index: i }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        fetchAPI();
+      });
+  }
   if (!apiResponse) fetchAPI();
   return (
     <div className="page">
@@ -44,7 +59,12 @@ function App() {
             message:
               "regy test phrase regy test phrase regy test phrase regy test phrase regy test phrase regy test phrase regy test phrase regy test phrase regy test phrase regy test phrase regy test phrase regy test phrase regy test phrase regy test phrase ",
             messageID: 1091898634762731712,
-            authorID: 275787354688585730,
+            author: {
+              id: 275787354688585730,
+              name: "Endercass",
+              pfpURL:
+                "https://cdn.discordapp.com/avatars/275787354688585730/44c5228ff7252802c17d4fd838845393?size=512",
+            },
           });
         }}
         title={JSON.stringify(apiResponse)}
@@ -57,15 +77,43 @@ function App() {
             return (
               <div className="infraction-tile" key={index}>
                 {/* <h1 title={infraction.messageID}>{infraction.message}</h1> */}
-                <span>
-                  Message "{infraction.messageID}" violates regex: "
-                  {infraction.regexID}"
-                </span>
+                <span className="regex-id">{infraction.regexID}</span>
                 <DiscordMessages>
-                  <DiscordMessage title="aaaddasad">
+                  <DiscordMessage
+                    author={infraction.author.name}
+                    avatar={infraction.author.pfpURL}
+                  >
                     {infraction.message}
                   </DiscordMessage>
                 </DiscordMessages>
+                <div className="infr-actions">
+                  <button
+                    className="infr-action"
+                    title={infraction.messageID}
+                    onClick={() => {
+                      navigator.clipboard.writeText(infraction.messageID);
+                    }}
+                  >
+                    Copy Message ID
+                  </button>
+                  <button
+                    className="infr-action"
+                    onClick={() => {
+                      rmInfraction(apiResponse.indexOf(infraction));
+                    }}
+                  >
+                    Dismiss Infraction
+                  </button>
+                  <button
+                    className="infr-action"
+                    title={infraction.author.id}
+                    onClick={() => {
+                      navigator.clipboard.writeText(infraction.author.id);
+                    }}
+                  >
+                    Copy User ID
+                  </button>
+                </div>
               </div>
             );
           })}
