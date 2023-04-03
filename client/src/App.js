@@ -47,8 +47,7 @@ function App() {
                     avatar={infraction.author.pfpURL}
                     timestamp={
                       new Date(
-                        SnowflakeUtils.getTimestamp(`${infraction.messageID}`) *
-                          1000
+                        SnowflakeUtils.getTimestamp(`${infraction.messageID}`)
                       )
                     }
                   >
