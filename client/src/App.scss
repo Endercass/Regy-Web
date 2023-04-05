@@ -10,6 +10,20 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: $text;
+  .refresh-button {
+    border-radius: 10px;
+    border: none;
+    padding: 10px;
+    background-color: $sapphire;
+    color: $crust;
+    &:hover {
+      background-color: rgba($sapphire, $alpha: 0.75);
+    }
+    &:active {
+      background-color: $sapphire;
+    }
+  }
+
   .infraction-adder {
     padding: 10px;
     background-color: $peach;
@@ -48,6 +62,7 @@
       }
       .infr-actions {
         display: flex;
+        align-items: center;
         width: 100%;
         .infr-action {
           flex: 1;
@@ -59,6 +74,12 @@
           color: $text;
           &:nth-of-type(1) {
             margin-left: 0px;
+          }
+          &:hover {
+            background-color: rgba($overlay0, $alpha: 0.75);
+          }
+          &:active {
+            background-color: $overlay0;
           }
         }
       }

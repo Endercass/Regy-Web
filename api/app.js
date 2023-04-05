@@ -8,8 +8,7 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 
 import indexRouter from "./routes/index.js";
-import usersRouter from "./routes/users.js";
-import infractionsRouter from "./routes/infractions.js";
+import infractionsRouter from "./routes/api/infractions.js";
 
 var app = express();
 
@@ -27,8 +26,7 @@ app.use(
 );
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/infractions", infractionsRouter);
+app.use("/api/infractions", infractionsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

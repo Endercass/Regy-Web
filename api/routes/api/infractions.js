@@ -10,20 +10,18 @@ router.get("/", function (req, res, next) {
   res.status(200).json(infractions);
 });
 router.post("/add", function (req, res, next) {
-  console.log(
-    `POST to ${req.url} with data: ${JSON.stringify(req.body.infraction)}`
-  );
+  console.log(`POST to ${req.url} with data: ${JSON.stringify(req.body)}`);
   isvalid(req.body.infraction, {
-    regexID: { type: String, required: true },
+    regex_id: { type: String, required: true },
     message: { type: String, required: true },
-    messageID: { type: Number, required: true },
+    infraction_id: { type: String, required: true },
     author: {
       type: Object,
       required: true,
       schema: {
         id: { type: Number, required: true },
         name: { type: String, required: true },
-        pfpURL: { type: String, required: true },
+        pfp_url: { type: String, required: true },
       },
     },
   })
@@ -36,9 +34,7 @@ router.post("/add", function (req, res, next) {
     });
 });
 router.post("/rm", function (req, res, next) {
-  console.log(
-    `POST to ${req.url} with data: ${JSON.stringify(req.body.infraction)}`
-  );
+  console.log(`POST to ${req.url} with data: ${JSON.stringify(req.body)}`);
   isvalid(req.body, {
     index: { type: Number, required: true },
   })

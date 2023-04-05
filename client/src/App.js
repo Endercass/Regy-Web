@@ -3,13 +3,14 @@ import {
   DiscordMessage,
   DiscordMessages,
 } from "@danktuary/react-discord-message";
-import * as SnowflakeUtils from "discord-snowflake";
 import "./App.scss";
+
+var isDev = process.env.NODE_ENV !== "production";
 
 function App() {
   const [apiResponse, setApiResponse] = useState();
   function fetchAPI() {
-    fetch("http://localhost:9000/infractions/")
+    fetch(isDev ? "http://localhost:8080/api/infractions" : "/api/infractions")
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
@@ -17,14 +18,19 @@ function App() {
       });
   }
   function rmInfraction(i) {
-    fetch("http://localhost:9000/infractions/rm", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ index: i }),
-    })
+    fetch(
+      isDev
+        ? "http://localhost:8080/api/infractions/rm"
+        : "/api/infractions/rm",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ index: i }),
+      }
+    )
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
@@ -34,22 +40,19 @@ function App() {
   if (!apiResponse) fetchAPI();
   return (
     <div className="page">
+      <button className="refresh-button" onClick={fetchAPI}>
+        Refresh
+      </button>
       <div className="infractions">
         {apiResponse &&
           apiResponse.map((infraction, index, arr) => {
             return (
               <div className="infraction-tile" key={index}>
-                {/* <h1 title={infraction.messageID}>{infraction.message}</h1> */}
-                <span className="regex-id">{infraction.regexID}</span>
+                <span className="regex-id">{infraction.infraction_id}</span>
                 <DiscordMessages>
                   <DiscordMessage
                     author={infraction.author.name}
-                    avatar={infraction.author.pfpURL}
-                    timestamp={
-                      new Date(
-                        SnowflakeUtils.getTimestamp(`${infraction.messageID}`)
-                      )
-                    }
+                    avatar={infraction.author.pfp_url}
                   >
                     {infraction.message}
                   </DiscordMessage>
@@ -57,12 +60,12 @@ function App() {
                 <div className="infr-actions">
                   <button
                     className="infr-action"
-                    title={infraction.messageID}
+                    title={infraction.infraction_id}
                     onClick={() => {
-                      navigator.clipboard.writeText(infraction.messageID);
+                      navigator.clipboard.writeText(infraction.infraction_id);
                     }}
                   >
-                    Copy Message ID
+                    Copy Infraction ID
                   </button>
                   <button
                     className="infr-action"

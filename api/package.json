@@ -1,10 +1,11 @@
 {
   "name": "api",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
   "type": "module",
   "scripts": {
-    "start": "nodemon ./bin/www.js"
+    "test": "nodemon ./bin/www.js",
+    "start": "node ./bin/www.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
